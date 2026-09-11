@@ -11,11 +11,11 @@ The Services use Maven for building & packaging the dependencies.<br>
 Frontend is built on React (Vite+TypeScript). For Databases, MySQL Server<br>
 is configured to use with separate databases for microservices.<br>
 
-Prometheus & Grafana servics are deployed using docker-compose<br>
-with prometheus configuration file mounted as a service volume from the<br>
-prometheus/ directory at root. and using persistent volume for Grafana.<br>
+Prometheus & Grafana servics are deployed using docker-compose, with prometheus<br>
+configuration file mounted into a service volume from the prometheus/ directory<br>
+,and using persistent volume for Grafana.<br>
 
-(My Grafana Dashboard json file is present at grafana/ directory for importing)<br>
+(my grafana dashboard json file is present at grafana/ directory for import)<br>
 
 Prometheus Scraping:<br>
 
