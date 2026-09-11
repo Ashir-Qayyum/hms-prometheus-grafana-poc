@@ -1,0 +1,24 @@
+spring:
+    application:
+        name: Eureka-Server
+server:
+  port: 8761
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+
+# prometheus configs
+# management.endpoints.web.exposure.include=*
+# management.prometheus.metrics.export.enabled=true
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  prometheus:
+    metrics:
+      export:
+        enabled: true

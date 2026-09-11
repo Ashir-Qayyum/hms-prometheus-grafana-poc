@@ -1,0 +1,147 @@
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: Ashir123
+      MYSQL_DATABASE: hms
+    ports:
+      - "3306:3306"
+
+  eureka-server:
+    image: ashirqayyum/hms-eureka-server:localhost
+    build: 
+      context: ./hms-app/BACKEND/Eureka-Server
+    ports:
+      - "8761:8761"
+
+  userms:
+    image: ashirqayyum/hms-userms:localhost
+    build: 
+      context: ./hms-app/BACKEND/UserMS
+    ports:
+      - "8080:8080"
+    environment:
+      DB_HOST: mysql
+      DB_NAME: hms
+      DB_USER: root
+      DB_PASSWORD: Ashir123
+      EUREKA_HOST: eureka-server
+    depends_on:
+      - mysql
+      - eureka-server
+  
+  appointment:
+    image: ashirqayyum/hms-appointment:localhost
+    build: 
+      context: ./hms-app/BACKEND/Appointment
+    ports:
+      - "9200:9200"
+    environment:
+      DB_HOST: mysql
+      DB_NAME: appointmentdb
+      DB_USER: root
+      DB_PASSWORD: Ashir123
+      EUREKA_HOST: eureka-server
+    depends_on:
+      - mysql
+      - eureka-server
+
+  profilems:
+    image: ashirqayyum/hms-profilems:localhost
+    build: 
+      context: ./hms-app/BACKEND/ProfileMS
+    ports:
+      - "9100:9100"
+    environment:
+      DB_HOST: mysql
+      DB_NAME: profiledb
+      DB_USER: root
+      DB_PASSWORD: Ashir123
+      EUREKA_HOST: eureka-server
+    depends_on:
+      - mysql
+      - eureka-server
+
+  pharmacy:
+    image: ashirqayyum/hms-pharmacy:localhost
+    build: 
+      context: ./hms-app/BACKEND/pharmacy
+    ports:
+      - "9300:9300"
+    environment:
+      DB_HOST: mysql
+      DB_NAME: pharmacydb
+      DB_USER: root
+      DB_PASSWORD: Ashir123
+      EUREKA_HOST: eureka-server
+    depends_on:
+      - mysql
+      - eureka-server
+
+  media:
+    image: ashirqayyum/hms-media:localhost
+    build: 
+      context: ./hms-app/BACKEND/media
+    ports:
+      - "9400:9400"
+    environment:
+      DB_HOST: mysql
+      DB_NAME: mediadb
+      DB_USER: root
+      DB_PASSWORD: Ashir123
+      EUREKA_HOST: eureka-server
+    depends_on:
+      - mysql
+      - eureka-server
+
+
+  gateway:
+    image: ashirqayyum/hms-gateway:localhost
+    build: 
+      context: ./hms-app/BACKEND/GatewayMS
+    ports:
+      - "9000:9000"
+    environment:
+      EUREKA_HOST: eureka-server
+    depends_on:
+      - eureka-server
+
+
+  frontend:
+    image: ashirqayyum/hms-frontend:localhost
+    build: 
+      context: ./hms-app/FRONTEND/hms
+    ports:
+      - "5173:80"
+    depends_on:
+      - gateway
+
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus-config.yml:/etc/prometheus/prometheus.yml
+    depends_on:
+      - userms
+      - profilems
+      - appointment
+      - pharmacy
+      - media
+      - gateway
+      - eureka-server
+
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+    depends_on:
+      - prometheus
+
+
+volumes:
+  grafana-data:
