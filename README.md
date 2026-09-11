@@ -19,10 +19,10 @@ prometheus/ directory at root. and using persistent volume for Grafana.<br>
 
 Prometheus Scraping:<br>
 
-prometheus/Picture-01.png<br>
+![prometheus/Picture-01.png](prometheus/Picture-01.png)<br>
 
 Grafana Dashboard:<br>
 
-grafana/Picture-01.png<br>
+![grafana/Picture-01.png](grafana/Picture-01.png)<br>
 
-grafana/Picture-02.png<br>
+![grafana/Picture-02.png](grafana/Picture-02.png)<br>
